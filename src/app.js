@@ -1,10 +1,13 @@
-const app = require('express')();
+const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const dbConnect = require('./DB');
 
+const config = require('./config');
 const apiRouter = require('./api/Router');
 
-require('dotenv').config({ path: '.env' });
+const app = express();
+dbConnect();
 
 app.use(cookieParser());
 app.use(bodyParser.json({ type: 'application/json' }));
@@ -18,5 +21,5 @@ app.use((req, res, next) => {
 
 app.use('/api', apiRouter);
 
-const port = process.env.PORT || 8080;
+const port = config.port || 8080;
 app.listen(port, () => console.log(`App running on port ${port} 🍉 🍓`));
