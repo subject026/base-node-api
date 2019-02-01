@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const getUser = (req, res) => {
+const getCurrentUser = (req, res) => {
   // is there a cookie with token
   if (req.cookies.token) {
     const token = jwt.verify(req.cookies.token, process.env.APP_SECRET);
@@ -42,4 +42,4 @@ const logout = (req, res) => {
   return res.json({ user: false });
 };
 
-module.exports = { getUser, login, logout };
+module.exports = { getCurrentUser, login, logout };
