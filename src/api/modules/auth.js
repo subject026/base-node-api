@@ -1,40 +1,58 @@
 const jwt = require('jsonwebtoken');
+const User = require('../resources/user/user.model');
 
-const getCurrentUser = (req, res) => {
-  // is there a cookie with token
-  if (req.cookies.token) {
-    const token = jwt.verify(req.cookies.token, process.env.APP_SECRET);
-    res.json({
-      user: {
-        isLoggedIn: true,
-        name: token.user,
-      },
-    });
+const getCurrentUser = async (req, res) => {
+  if (req.user) {
+    try {
+      const user = await User.findById(req.user._id);
+      res.status(200).json({
+        user: {
+          isLoggedIn: true,
+          email: user.email,
+          isAdmin: user.isAdmin,
+        },
+      });
+    } catch (err) {
+      console.log('\n\nERRRR\n\n', err.message);
+      res.status(400).json({ message: 'Could not check current user!' });
+    }
   } else {
-    res.json({ user: { isLoggedIn: false } });
+    res.send({ user: { isLoggedIn: false } });
   }
 };
 
-const login = (req, res) => {
-  console.log('login controller\n');
-  console.log('req.body: ', req.body);
-  // Look up user
-  // Check username & password
-  //    - Success : Sign jwt and add to cookie
-  //    - failure : Send response advising login failed
-  const existingToken = req.cookies.token;
-  if (existingToken) {
-    const verified = jwt.verify(existingToken, process.env.APP_SECRET);
-    console.log(verified);
-    return res.json({ data: 'Already logged in' });
+const login = async (req, res) => {
+  // Check if already logged in
+  if (req.user) {
+    // 409:  conflict
+    res.status(409).send({ message: 'Already logged in!' });
   }
+  console.log('no existing token... logging in!');
+
+  // Look up user
+  let user;
+  try {
+    user = await User.findOne({ email: req.body.email }).select('email password isAdmin').exec();
+  } catch (err) {
+    console.log(err);
+  }
+
+  const match = await user.checkPassword(req.body.password);
+
+  console.log('match? ', match);
+
+  // no match : Send response advising login failed
+  if (!match) return res.status(401).send({ message: 'login failed!' });
+
+  // match : Sign jwt and add to cookie
   console.log('No token, need to set one...');
-  const token = jwt.sign({ user: 'thisIsUserId', role: 'ADMIN' }, process.env.APP_SECRET);
+  const token = jwt.sign({ _id: user._id, isAdmin: user.isAdmin }, process.env.APP_SECRET);
   res.cookie('token', token, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
   });
-  return res.json({ user: 'loggedInUser' });
+  console.log(user);
+  return res.status(200).json({ user: { email: user.email, isAdmin: user.isAdmin } });
 };
 
 const logout = (req, res) => {

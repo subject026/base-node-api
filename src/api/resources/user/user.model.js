@@ -13,7 +13,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
+    isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   { timestamps: true },
 );
@@ -28,6 +32,20 @@ userSchema.pre('save', function(next) {
     next();
   });
 });
+
+
+userSchema.methods.checkPassword = function(password) {
+  const passwordHash = this.password
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, passwordHash, (err, same) => {
+      if (err) {
+        return reject(err)
+      }
+      resolve(same)
+    })
+  })
+}
 /* eslint-enable */
+
 
 module.exports = mongoose.model('user', userSchema);

@@ -8,6 +8,18 @@ const createOne = model => async (req, res) => {
     res.status(201).json({ data: doc });
   } catch (e) {
     console.error(e);
+    res.status(400).json({ message: 'Could not create document' });
+  }
+};
+
+const getAll = model => async (req, res) => {
+  // TO DO -
+  // Add ability to get records based on document owner if arg passed in (id)
+  try {
+    const docs = await model.find();
+    res.status(200).json({ data: docs });
+  } catch (e) {
+    console.error(e);
     res.status(400).end();
   }
 };
@@ -16,6 +28,7 @@ const createOne = model => async (req, res) => {
 // obj containing all generic crud controllers
 const generateControllers = model => ({
   createOne: createOne(model),
+  getAll: getAll(model),
 });
 
 
