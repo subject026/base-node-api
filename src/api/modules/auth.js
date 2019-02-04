@@ -5,6 +5,18 @@ const getCurrentUser = async (req, res) => {
   if (req.user) {
     try {
       const user = await User.findById(req.user._id);
+      if (!user) {
+        // Cookie had a verified token but no user found for _id
+        // Clear cookie
+        res.clearCookie('token');
+        res.status(404)
+          .json({
+            message: 'User not found',
+            user: {
+              isLoggedIn: false,
+            },
+          });
+      }
       res.status(200).json({
         user: {
           isLoggedIn: true,
@@ -25,7 +37,7 @@ const login = async (req, res) => {
   // Check if already logged in
   if (req.user) {
     // 409:  conflict
-    res.status(409).send({ message: 'Already logged in!' });
+    return res.status(409).json({ message: 'Already logged in!' });
   }
   console.log('no existing token... logging in!');
 
@@ -36,6 +48,7 @@ const login = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+  console.log(user);
 
   const match = await user.checkPassword(req.body.password);
 
@@ -51,7 +64,6 @@ const login = async (req, res) => {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
   });
-  console.log(user);
   return res.status(200).json({ user: { email: user.email, isAdmin: user.isAdmin } });
 };
 

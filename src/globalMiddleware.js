@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const config = require('./config');
 
 module.exports = (app) => {
+  console.log('Node enviornment set to', config.env);
   app.use(bodyParser.json({ type: 'application/json' }));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cookieParser());

@@ -4,5 +4,5 @@ const config = require('./config');
 mongoose.Promise = global.Promise;
 
 module.exports = () => {
-  mongoose.connect(config.db.url, { useNewUrlParser: true });
+  mongoose.connect(config.db, { useNewUrlParser: true });
 };
