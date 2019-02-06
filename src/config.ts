@@ -1,6 +1,8 @@
-require('dotenv').config({ path: '.env' });
-const { merge } = require('lodash');
+import dotenv from 'dotenv';
 
+import {merge} from 'lodash';
+
+dotenv.config();
 const env = process.env.NODE_ENV || 'PROD';
 
 const baseConfig = {
@@ -27,4 +29,4 @@ switch (env) {
     };
 }
 
-module.exports = merge(baseConfig, envConfig);
+export default merge(baseConfig, envConfig);

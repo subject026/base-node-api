@@ -13,4 +13,4 @@ restRouter.route('/logout')
 // api/user
 restRouter.use('/user', userRouter);
 
-module.exports = restRouter;
+export default restRouter;

@@ -1,12 +1,12 @@
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const morgan = require('morgan');
-const jwt = require('jsonwebtoken');
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
+import jwt from 'jsonwebtoken';
 
-const config = require('./config');
+import config from'./config';
 
-module.exports = (app) => {
-  console.log('Node enviornment set to', config.env);
+export default (app) => {
+  console.log('Node environment set to', config.env);
   app.use(bodyParser.json({ type: 'application/json' }));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cookieParser());
