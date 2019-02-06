@@ -1,9 +1,14 @@
 {
   "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
     "watch": true,
     "outDir": "./dist",
-    "strict": false
+    "strict": false,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node"
   },
   "include": ["src"],
-  "exclude": ["node_modules"],                          
+  "exclude": ["node_modules"]
 }

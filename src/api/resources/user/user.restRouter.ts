@@ -1,22 +1,32 @@
-const router = require('express').Router();
+import express from "express";
 
-const { createOne, getAll } = require('./user.controller');
+import { createOne, getAll } from "./user.controller";
 
-const protect = (req, res, next) => {
+const protect = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
   if (!req.user) {
-    return res.status(401).json({ message: 'Log in first!' });
+    return res.status(401).json({ message: "Log in first!" });
   }
   console.log(req.user);
   next();
 };
 
-const protectAdmin = (req, res, next) => {
-  if (!req.user.isAdmin) return res.status(401).json({ message: 'Not Authorized!' });
+const protectAdmin = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  if (!req.user.isAdmin)
+    return res.status(401).json({ message: "Not Authorized!" });
   return next();
 };
 
-router.route('/').post(createOne);
-router.route('/').get(protectAdmin, getAll);
+const router = express.Router();
 
+router.route("/").post(createOne);
+router.route("/").get(protectAdmin, getAll);
 
-module.exports = router;
+export default router;

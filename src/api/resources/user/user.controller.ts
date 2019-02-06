@@ -1,4 +1,4 @@
-const generateControllers = require('../../modules/generateControllers');
-const User = require('./user.model');
+import generateControllers from "../../modules/generateControllers";
+import { User } from "./user.model";
 
-module.exports = generateControllers(User);
+export const { createOne, getAll } = generateControllers(User);

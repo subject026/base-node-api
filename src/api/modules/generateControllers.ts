@@ -1,6 +1,12 @@
+import express from "express";
+import mongoose from "mongoose";
+
 // Generic methods available for all models
 
-const createOne = model => async (req, res) => {
+const createOne = (model: mongoose.Document) => async (
+  req: express.Request,
+  res: express.Response
+) => {
   // If user on req we'll attach id to new record
   const createdBy = req.user ? req.user._id : false;
   try {
@@ -8,11 +14,14 @@ const createOne = model => async (req, res) => {
     res.status(201).json({ data: doc });
   } catch (e) {
     console.error(e);
-    res.status(400).json({ message: 'Could not create document' });
+    res.status(400).json({ message: "Could not create document" });
   }
 };
 
-const getAll = model => async (req, res) => {
+const getAll = (model: mongoose.Document) => async (
+  req: express.Request,
+  res: express.Response
+) => {
   // TO DO -
   // Add ability to get records based on document owner if arg passed in (id)
   try {
@@ -26,10 +35,9 @@ const getAll = model => async (req, res) => {
 
 // Export fn that takes model and produces
 // obj containing all generic crud controllers
-const generateControllers = model => ({
+const generateControllers = (model: mongoose.Document) => ({
   createOne: createOne(model),
-  getAll: getAll(model),
+  getAll: getAll(model)
 });
 
-
-module.exports = generateControllers;
+export default generateControllers;
