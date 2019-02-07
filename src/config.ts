@@ -37,6 +37,6 @@ switch (env) {
     };
 }
 
-const fullConfig: APIConfig = merge(baseConfig, envConfig);
+const fullConfig = merge(baseConfig, envConfig) as APIConfig;
 
 export default fullConfig;

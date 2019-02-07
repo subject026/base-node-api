@@ -1,6 +1,6 @@
 const restRouter = require("express").Router();
 
-import { checkCookie, login, logout } from "./modules/auth";
+import { checkCookie, login, logout } from "./util/auth";
 import userRouter from "./resources/user/user.restRouter";
 
 // api

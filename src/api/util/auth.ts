@@ -1,11 +1,11 @@
 import * as jwt from "jsonwebtoken";
 import express from "express";
-import { User } from "../resources/user/user.model";
+import { User, IUserModel } from "../resources/user/user.model";
 
 const checkCookie = async (req: express.Request, res: express.Response) => {
   if (req.user) {
     try {
-      const user = await User.findById(req.user._id);
+      const user = (await User.findById(req.user._id)) as IUserModel;
       if (!user) {
         // Cookie had a verified token but no user found for _id
         // Clear cookie
@@ -44,9 +44,9 @@ const login = async (req: express.Request, res: express.Response) => {
   // Look up user
   let user;
   try {
-    user = await User.findOne({ email: req.body.email })
+    user = (await User.findOne({ email: req.body.email })
       .select("email password isAdmin")
-      .exec();
+      .exec()) as IUserModel;
   } catch (err) {
     console.log(err);
   }

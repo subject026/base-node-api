@@ -1,9 +1,9 @@
 import express from "express";
-import mongoose from "mongoose";
+import { Model } from "mongoose";
 
 // Generic methods available for all models
 
-const createOne = (model: mongoose.Document) => async (
+const createOne = (model: Model<any>) => async (
   req: express.Request,
   res: express.Response
 ) => {
@@ -18,7 +18,7 @@ const createOne = (model: mongoose.Document) => async (
   }
 };
 
-const getAll = (model: mongoose.Document) => async (
+const getAll = (model: Model<any>) => async (
   req: express.Request,
   res: express.Response
 ) => {
@@ -35,7 +35,7 @@ const getAll = (model: mongoose.Document) => async (
 
 // Export fn that takes model and produces
 // obj containing all generic crud controllers
-const generateControllers = (model: mongoose.Document) => ({
+const generateControllers = (model: Model<any>) => ({
   createOne: createOne(model),
   getAll: getAll(model)
 });

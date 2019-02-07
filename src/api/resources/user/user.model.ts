@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
+import { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
 
-export interface UserDocument {
+export interface IUserModel extends Document {
   email: string;
   password: string;
   isAdmin: boolean;
+  checkPassword(password: string): boolean;
 }
 
-const userSchema = new mongoose.Schema(
+const userSchema: Schema = new Schema(
   {
     email: {
       type: String,
@@ -28,18 +30,20 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-/* eslint-disable */
-// Linter doesn't like this callback
-userSchema.pre("save", function(next) {
+userSchema.pre<IUserModel>("save", function(next) {
   if (!this.isModified("password")) return next();
   bcrypt.hash(this.password, 8, (err, hash) => {
     if (err) return next(err);
     this.password = hash;
+    /*
+      Note: this next() isn't an express NextFunction, it's
+      mongoose's own next function for stepping through middleware
+    */
     next();
   });
 });
 
-userSchema.methods.checkPassword = function(password) {
+userSchema.methods.checkPassword = function(password: string) {
   const passwordHash = this.password;
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, passwordHash, (err, same) => {
@@ -52,4 +56,4 @@ userSchema.methods.checkPassword = function(password) {
 };
 /* eslint-enable */
 
-export const User: UserDocument = mongoose.model("user", userSchema);
+export const User = mongoose.model<IUserModel>("user", userSchema);
