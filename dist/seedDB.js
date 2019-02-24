@@ -26,7 +26,7 @@ const url = "https://randomuser.me/api/?results=10";
         catch (err) {
             console.log(err);
         }
-        if (process.argv[2].toUpperCase() === "CLEAR") {
+        if (process.argv.length > 2 && process.argv[2].toUpperCase() === "CLEAR") {
             console.log("Clearing DB....");
             yield user_model_1.User.deleteMany({});
             console.log("Done!");
@@ -42,6 +42,13 @@ const url = "https://randomuser.me/api/?results=10";
                 const { email, login: { password } } = result;
                 const doc = yield user_model_1.User.create({ email, password });
             }));
+            const admin = yield user_model_1.User.create({
+                email: "admin@example.com",
+                password: "password",
+                isAdmin: true
+            });
+            console.log("All done :->)");
+            process.exit(0);
         }
     });
 })();

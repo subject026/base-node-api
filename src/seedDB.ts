@@ -15,7 +15,7 @@ const url = "https://randomuser.me/api/?results=10";
     console.log(err);
   }
 
-  if (process.argv[2].toUpperCase() === "CLEAR") {
+  if (process.argv.length > 2 && process.argv[2].toUpperCase() === "CLEAR") {
     console.log("Clearing DB....");
     await User.deleteMany({});
     console.log("Done!");
@@ -33,5 +33,12 @@ const url = "https://randomuser.me/api/?results=10";
       } = result;
       const doc = await User.create({ email, password });
     });
+    const admin = await User.create({
+      email: "admin@example.com",
+      password: "password",
+      isAdmin: true
+    });
+    console.log("All done :->)");
+    process.exit(0);
   }
 })();
