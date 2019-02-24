@@ -37,12 +37,19 @@ const url = "https://randomuser.me/api/?results=10";
                 resolveWithFullResponse: true
             });
             const results = JSON.parse(res.body).results;
-            console.log(results);
             results.forEach((result) => __awaiter(this, void 0, void 0, function* () {
-                const { email, login: { password } } = result;
-                const doc = yield user_model_1.User.create({ email, password });
+                const { email, login: { password, username }, name, phone, picture: { thumbnail } } = result;
+                yield user_model_1.User.create({
+                    email,
+                    password,
+                    name,
+                    username,
+                    telephone: phone,
+                    profileImageUrl: thumbnail
+                });
+                // const doc = await User.create({ email, password });
             }));
-            const admin = yield user_model_1.User.create({
+            yield user_model_1.User.create({
                 email: "admin@example.com",
                 password: "password",
                 isAdmin: true

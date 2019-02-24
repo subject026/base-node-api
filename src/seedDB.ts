@@ -25,15 +25,26 @@ const url = "https://randomuser.me/api/?results=10";
       resolveWithFullResponse: true
     });
     const results = JSON.parse(res.body).results;
-    console.log(results);
     results.forEach(async result => {
       const {
         email,
-        login: { password }
+        login: { password, username },
+        name,
+        phone,
+        picture: { thumbnail }
       } = result;
-      const doc = await User.create({ email, password });
+      await User.create({
+        email,
+        password,
+        name,
+        username,
+        telephone: phone,
+        profileImageUrl: thumbnail
+      });
+
+      // const doc = await User.create({ email, password });
     });
-    const admin = await User.create({
+    await User.create({
       email: "admin@example.com",
       password: "password",
       isAdmin: true
