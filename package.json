@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "",
   "main": "dist/app.js",
+  "engines": {
+    "node": "10.14.1",
+    "npm": "6.x"
+  },
   "scripts": {
     "dev": "NODE_ENV=DEV nodemon dist/app.js",
     "tsc": "tsc",
