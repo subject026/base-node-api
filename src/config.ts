@@ -28,6 +28,11 @@ switch (env) {
       frontendUrl: process.env.DEV_FRONTEND_URL
     };
     break;
+  case "TEST":
+    envConfig = {
+      db: process.env.TEST_DB_URL
+    };
+    break;
   default:
     envConfig = {
       // Use Heroku port

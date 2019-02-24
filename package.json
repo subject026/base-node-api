@@ -9,6 +9,7 @@
     "dev": "NODE_ENV=DEV nodemon dist/app.js",
     "tsc": "tsc",
     "start": "node dist/app.js",
+    "seedDB": "NODE_ENV=TEST node dist/seedDB.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -22,7 +23,9 @@
     "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
     "mongoose": "^5.4.8",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
