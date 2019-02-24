@@ -2,11 +2,15 @@ import mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
 
-// Extend standard mongoose Document type, add fields we have on schema... 
+// Extend standard mongoose Document type, add fields we have on schema...
 export interface IUserModel extends Document {
   email: string;
   password: string;
   isAdmin: boolean;
+  name: object;
+  username: string;
+  telephone: string;
+  profileImageUrl: string;
   checkPassword(password: string): boolean;
 }
 
@@ -26,6 +30,32 @@ const userSchema: Schema = new Schema(
       type: Boolean,
       required: true,
       default: false
+    },
+    username: {
+      type: String,
+      required: false
+    },
+    name: {
+      title: {
+        type: String,
+        required: false
+      },
+      first: {
+        type: String,
+        required: false
+      },
+      last: {
+        type: String,
+        required: false
+      }
+    },
+    telephone: {
+      type: String,
+      required: false
+    },
+    profileImageUrl: {
+      type: String,
+      required: false
     }
   },
   { timestamps: true }

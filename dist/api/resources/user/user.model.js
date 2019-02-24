@@ -21,6 +21,32 @@ const userSchema = new mongoose_2.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    username: {
+        type: String,
+        required: false
+    },
+    name: {
+        title: {
+            type: String,
+            required: false
+        },
+        first: {
+            type: String,
+            required: false
+        },
+        last: {
+            type: String,
+            required: false
+        }
+    },
+    telephone: {
+        type: String,
+        required: false
+    },
+    profileImageUrl: {
+        type: String,
+        required: false
     }
 }, { timestamps: true });
 userSchema.pre("save", function (next) {

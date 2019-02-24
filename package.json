@@ -9,7 +9,8 @@
     "dev": "NODE_ENV=DEV nodemon dist/app.js",
     "tsc": "tsc",
     "start": "node dist/app.js",
-    "seedDB": "NODE_ENV=TEST node dist/seedDB.js",
+    "seedTest": "NODE_ENV=TEST node dist/seedDB.js",
+    "seedDev": "NODE_ENV=DEV node dist/seedDB.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
