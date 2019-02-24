@@ -39,7 +39,6 @@ const login = async (req: express.Request, res: express.Response) => {
     // 409:  conflict
     return res.status(409).json({ message: "Already logged in!" });
   }
-  console.log("no existing token... logging in!");
 
   // Look up user
   let user;
@@ -48,19 +47,17 @@ const login = async (req: express.Request, res: express.Response) => {
       .select("email password isAdmin")
       .exec()) as IUserModel;
   } catch (err) {
-    console.log(err);
+    console.log("ERR: ", err);
   }
-  console.log(user);
-
+    
+  if (!user) return res.status(401).json({message: 'Login failed!'})
+  
   const match = await user.checkPassword(req.body.password);
-
-  console.log("match? ", match);
 
   // no match : Send response advising login failed
   if (!match) return res.status(401).send({ message: "login failed!" });
 
   // match : Sign jwt and add to cookie
-  console.log("No token, need to set one...");
   const token = jwt.sign(
     { _id: user._id, isAdmin: user.isAdmin },
     process.env.APP_SECRET

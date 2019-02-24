@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
 
+// Extend standard mongoose Document type, add fields we have on schema... 
 export interface IUserModel extends Document {
   email: string;
   password: string;
