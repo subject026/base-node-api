@@ -4,8 +4,6 @@ const mongoose = require("mongoose");
 import config from "./config";
 import { User } from "./api/resources/user/user.model";
 
-const url = "https://randomuser.me/api/?results=10";
-
 (async function() {
   mongoose.Promise = global.Promise;
   try {
@@ -21,6 +19,7 @@ const url = "https://randomuser.me/api/?results=10";
     console.log("Done!");
     process.exit(0);
   } else {
+    const url = `https://randomuser.me/api/?results=${process.argv[2] || 20}`;
     const res = await request(url, {
       resolveWithFullResponse: true
     });
@@ -31,7 +30,7 @@ const url = "https://randomuser.me/api/?results=10";
         login: { password, username },
         name,
         phone,
-        picture: { thumbnail }
+        picture: { large }
       } = result;
       await User.create({
         email,
@@ -39,10 +38,8 @@ const url = "https://randomuser.me/api/?results=10";
         name,
         username,
         telephone: phone,
-        profileImageUrl: thumbnail
+        profileImageUrl: large
       });
-
-      // const doc = await User.create({ email, password });
     });
     await User.create({
       email: "admin@example.com",

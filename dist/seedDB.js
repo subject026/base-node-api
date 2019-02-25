@@ -15,7 +15,6 @@ const request = require("request-promise");
 const mongoose = require("mongoose");
 const config_1 = __importDefault(require("./config"));
 const user_model_1 = require("./api/resources/user/user.model");
-const url = "https://randomuser.me/api/?results=10";
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
         mongoose.Promise = global.Promise;
@@ -33,21 +32,21 @@ const url = "https://randomuser.me/api/?results=10";
             process.exit(0);
         }
         else {
+            const url = `https://randomuser.me/api/?results=${process.argv[2] || 20}`;
             const res = yield request(url, {
                 resolveWithFullResponse: true
             });
             const results = JSON.parse(res.body).results;
             results.forEach((result) => __awaiter(this, void 0, void 0, function* () {
-                const { email, login: { password, username }, name, phone, picture: { thumbnail } } = result;
+                const { email, login: { password, username }, name, phone, picture: { large } } = result;
                 yield user_model_1.User.create({
                     email,
                     password,
                     name,
                     username,
                     telephone: phone,
-                    profileImageUrl: thumbnail
+                    profileImageUrl: large
                 });
-                // const doc = await User.create({ email, password });
             }));
             yield user_model_1.User.create({
                 email: "admin@example.com",
