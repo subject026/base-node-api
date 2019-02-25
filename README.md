@@ -1,11 +1,9 @@
-# bleugh
+## Loading DB
 
-etc.
+Using the [randomuser.me](https://randomuser.me) API.
 
-## To Dos
+1. Complete .env with `TEST_DB` url
 
-??
+Setup some such MLAB, local etc.
 
-## Reminders
-
-deploy to heroku
+2. BOOM
